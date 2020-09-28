@@ -10,6 +10,13 @@ class UserType(DjangoObjectType):
         # only_fields = ('id', 'email', 'username', 'password')         # in order to restrict the fields that are returned!
 
 
+class Query(graphene.ObjectType):
+    user = graphene.Field(UserType, id=graphene.Int(required=True))
+
+    def resolve_user(self, info, id):
+        return get_user_model().objects.get(id=id)
+
+
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
 
